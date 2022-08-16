@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.ListenerPriority
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.EnumWrappers
+import com.ddang_.hantaengine.listeners.BasicListener
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -72,6 +73,13 @@ class Hantaengine : JavaPlugin() {
         )
     }
 
+    //이벤트 리스너 목록입니다.
+    private val events = arrayOf(
+
+        BasicListener()
+
+    )
+
     override fun onEnable() {
 
         //인스턴스 변수를 잡습니다.
@@ -79,6 +87,13 @@ class Hantaengine : JavaPlugin() {
         instance = this
         scheduler = server.scheduler
         protocolManager = ProtocolLibrary.getProtocolManager()
+
+        //이벤트 리스너를 서버에 등록합니다.
+        server.pluginManager.apply {
+            events.forEach {
+                registerEvents(it, this@Hantaengine)
+            }
+        }
 
         setEffectAndSound()
 
