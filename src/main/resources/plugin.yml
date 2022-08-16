@@ -1,0 +1,6 @@
+name: HantaEngine
+version: Alpha-0.0.1
+main: com.ddang_.hantaengine.Hantaengine
+authors: [ DDang_ ]
+description: Minecraft Team Fight(Hanta) Main System for 1.12.2 Bukkit Server
+website: https://github.com/I-am-ddang
