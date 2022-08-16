@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.EnumWrappers
 import com.ddang_.hantaengine.listeners.BasicListener
+import com.ddang_.hantaengine.listeners.player.DamageListener
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -76,7 +77,7 @@ class Hantaengine : JavaPlugin() {
     //이벤트 리스너 목록입니다.
     private val events = arrayOf(
 
-        BasicListener()
+        BasicListener(), DamageListener()
 
     )
 
