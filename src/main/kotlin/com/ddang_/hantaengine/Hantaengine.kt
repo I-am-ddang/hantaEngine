@@ -1,7 +1,14 @@
 package com.ddang_.hantaengine
 
+import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
+import com.comphenix.protocol.events.ListenerPriority
+import com.comphenix.protocol.events.PacketAdapter
+import com.comphenix.protocol.events.PacketEvent
+import com.comphenix.protocol.wrappers.EnumWrappers
 import org.bukkit.Bukkit
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
@@ -36,5 +43,49 @@ class Hantaengine : JavaPlugin() {
             private set
     }
 
+    //제거할 상위버전 소리를 담은 set 변수입니다.
+    private val soundLimit = setOf(
+        Sound.ENTITY_PLAYER_ATTACK_KNOCKBACK,
+        Sound.ENTITY_PLAYER_ATTACK_SWEEP,
+        Sound.ENTITY_PLAYER_ATTACK_NODAMAGE,
+        Sound.ENTITY_PLAYER_ATTACK_WEAK,
+        Sound.ENTITY_PLAYER_ATTACK_STRONG, Sound.ENTITY_PLAYER_ATTACK_CRIT)
+
+    //프로토콜립을 이용해 소리와 이펙트를 지웁니다.
+    private fun setEffectAndSound() {
+        protocolManager.addPacketListener(
+            object : PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.NAMED_SOUND_EFFECT, PacketType.Play.Server.WORLD_PARTICLES) {
+                override fun onPacketSending(event: PacketEvent?) {
+                    if (event?.packetType === PacketType.Play.Server.WORLD_PARTICLES) {
+                        val effect = event?.packet?.particles?.read(0)
+                        if (effect == EnumWrappers.Particle.SWEEP_ATTACK) {
+                            event.isCancelled = true
+                        }
+                    } else {
+                        val sound = event?.packet?.soundEffects?.read(0)
+                        if (soundLimit.contains(sound)) {
+                            event?.isCancelled = true
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    override fun onEnable() {
+
+        //인스턴스 변수를 잡습니다.
+        players = server.onlinePlayers
+        instance = this
+        scheduler = server.scheduler
+        protocolManager = ProtocolLibrary.getProtocolManager()
+
+        setEffectAndSound()
+
+    }
+
+    override fun onDisable() {
+
+    }
 
 }

@@ -9,7 +9,6 @@ class GUIManager {
     companion object {
 
         //InventoryName 을 구분해 커스텀 GUI 를 반환하는 메소드입니다.
-
         fun getInventory(name: InventoryName): Inventory? {
             when (name) {
                 else -> return null
