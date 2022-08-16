@@ -11,6 +11,7 @@ class ItemUtil {
 
         //GUI 에 담기는 커스텀 아이템스텍을 만드는데 주로 사용됩니다.
         fun toItem(name: String, lore: List<String>, material: Material, amount: Int): ItemStack {
+
             val i = ItemStack(material, amount)
             val meta = i.itemMeta.apply {
                 displayName = name
@@ -19,6 +20,7 @@ class ItemUtil {
                 addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE)
             }
             i.itemMeta = meta
+
             return i
         }
     }
